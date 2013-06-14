@@ -1,0 +1,234 @@
+// Global Foundation Settings
+@import "settings";
+
+// Comment out this import if you don't want to use normalize
+@import "normalize";
+
+// Comment out this import if you are customizing you imports below
+//@import "foundation";
+
+// Import specific parts of Foundation by commenting the import "foundation"
+// and uncommenting what you want below. You must uncomment the following if customizing
+
+@import "foundation/components/global"; // *always required
+@import "foundation/components/grid";
+// @import "foundation/components/visibility";
+// @import "foundation/components/block-grid";
+// @import "foundation/components/type";
+@import "foundation/components/buttons";
+// @import "foundation/components/forms"; // *requires components/buttons
+// @import "foundation/components/custom-forms"; // *requires components/buttons, components/forms
+// @import "foundation/components/button-groups"; // *requires components/buttons
+// @import "foundation/components/dropdown-buttons"; // *requires components/buttons
+// @import "foundation/components/split-buttons"; // *requires components/buttons
+// @import "foundation/components/flex-video";
+// @import "foundation/components/section";
+// @import "foundation/components/top-bar";  // *requires components/grid
+// @import "foundation/components/orbit";
+// @import "foundation/components/reveal";
+// @import "foundation/components/joyride";
+// @import "foundation/components/clearing";
+// @import "foundation/components/alert-boxes";
+// @import "foundation/components/breadcrumbs";
+// @import "foundation/components/keystrokes";
+// @import "foundation/components/labels";
+// @import "foundation/components/inline-lists";
+// @import "foundation/components/pagination";
+// @import "foundation/components/panels";
+// @import "foundation/components/pricing-tables";
+// @import "foundation/components/progress-bars";
+// @import "foundation/components/side-nav";
+// @import "foundation/components/sub-nav";
+// @import "foundation/components/switch";
+// @import "foundation/components/magellan";
+// @import "foundation/components/tables";
+// @import "foundation/components/thumbs";
+// @import "foundation/components/tooltips";
+// @import "foundation/components/dropdown";
+
+@import "compass/css3";
+@import "animation";
+
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Condensed Light'), local('RobotoCondensed-Light'), url(http://themes.googleusercontent.com/static/fonts/robotocondensed/v7/b9QBgL0iMZfDSpmcXcE8nMrfajfqx5pse9BUPMmpr-I.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Condensed Regular'), local('RobotoCondensed-Regular'), url(http://themes.googleusercontent.com/static/fonts/robotocondensed/v7/Zd2E9abXLFGSr9G3YK2MsNxB8OB85xaNTJvVSB9YUjQ.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Condensed Bold'), local('RobotoCondensed-Bold'), url(http://themes.googleusercontent.com/static/fonts/robotocondensed/v7/b9QBgL0iMZfDSpmcXcE8nPZRQUbYfRc-1FWT9T9EE8M.woff) format('woff');
+}
+
+// Compass mixins
+@mixin fullsize {
+	width: 100%;
+	height: 100%;
+}
+
+$bg: #70BB4D;
+
+.green-button { 
+	$button-margin-bottom: 0;
+	@include button($button-med, #70BB4D, false, false, false, false);
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	background: #EEE;
+}
+
+.full-width {
+	max-width: 100%;
+}
+
+.full-height {
+	max-height: 100%;
+	height: 100%;
+}
+
+.main-container {
+	@include perspective(800);
+
+	.back, .front {
+		position: absolute;
+		@include backface-visibility(hidden);
+	}
+	
+	#loader.front {
+		@include fullsize;
+		background: white;
+		z-index: 1;
+		@include transition(all 1s cubic-bezier(0.770, 0.000, 0.175, 1.000));
+
+		.loading {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 100px;
+			height: 100px;
+			margin-left: -50px;
+			margin-top: -50px;
+			padding-top: 43px;
+			// background: #EEE;
+			color: #666;
+			text-align: center;
+			// text-transform: uppercase;
+			// letter-spacing: -1px;
+			font-weight: bold;
+			@include border-radius(50px);
+			@include animation(shadow 2s infinite);
+		}
+	}
+
+	.map-container.back {
+		@include fullsize;
+		@include rotateY(180deg);
+		@include transition(all 1s cubic-bezier(0.770, 0.000, 0.175, 1.000));
+	}
+
+	&.loaded {
+		#loader.front {
+			@include rotateY(-180deg);
+		}
+		
+		.map-container.back {
+			@include rotateY(0);	
+		}
+	}
+}
+
+.map-container {
+	.map-content {
+		position: absolute;
+		top: 10%;
+		left: 80px;
+		width: 400px;
+		@include perspective(800);
+		@include perspective-origin(0);
+		@include backface-visibility(hidden);
+	}
+
+	[class*="step-"] {
+		background: white;
+		padding: 28px;
+		@include fullsize;
+		@include box-shadow(0px 2px 4px rgba(0, 0, 0, 0.2));
+		@include border-radius(2px);
+		font-size:emCalc(14px);
+		opacity: 0;
+		@include transition(all 1s cubic-bezier(0.175, 0.885, 0.320, 1.275));
+		@include translateY(-20px);
+		@include transform-origin(0);
+		@include clearfix();
+
+		&.show {
+			opacity: 1;
+			@include translateY(0);
+		}
+
+		&.hide {
+			opacity: 1;
+			@include transform(translateY(0) rotateY(-90deg));
+			@include transition(all 0.5s cubic-bezier(0.895, 0.030, 0.685, 0.220));
+			@include backface-visibility(hidden);
+		}
+
+		h1:first-child {
+			margin-top: 0;
+		}
+
+		p {
+			line-height: 1.5em;
+		}
+	}
+}
+
+#map {
+	@include fullsize;
+}
+
+
+@include keyframes(shadow) {
+  0%, 100% {
+    @include box-shadow(10px 1px 10px rgba(0,0,0,0.2));
+  }
+  50% {
+    @include box-shadow(-10px 1px 10px rgba(0,0,0,0.2));
+  }
+}
+
+
+/* We use this media query to add styles to any device that supports media queries */
+@media #{$screen} { }
+
+/* Used to alter styles for screens at least 768px wide. This is where the grid changes. */
+@media #{$small} { }
+
+/* Used to alter styles for screens at least 1280px wide. */
+@media #{$medium} { }
+
+/* Used to alter styles for screens at least 1440px wide. */
+@media #{$large} { }
+
+/* Apply styles to screens in landscape orientation */
+@media #{$landscape} { }
+
+/* Apply styles to screens in portrait orientation */
+@media #{$portrait} { }
+
+/* We also use Modernizr to add a .touch class to the body when applicable */
+/* You can prepend this class to anything and it will style only for touch devices */
+.touch .your-element {}
